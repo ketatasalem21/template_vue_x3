@@ -6,31 +6,12 @@
       :min-right-width="500"
       :show-right-on-mobile="showRightOnMobile"
       @mobile-toggle="setShowRightOnMobile"
-    >
-      <template #left>
-        <AppSidebar 
-          :articles="sampleArticles"
-          :selected-article="selectedArticle"
-          @select-article="setSelectedArticle"
-          @toggle-mobile-view="toggleMobileView"
-        />
-      </template>
-      <template #right>
-        <MainContent 
-          :article="selectedArticle"
-          :articles="sampleArticles"
-          @select-article="setSelectedArticle"
-          @toggle-mobile-view="toggleMobileView"
-        />
-      </template>
-    </AppSplitter>
+    />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import AppSidebar from './AppSidebar.vue'
-import MainContent from './MainContent.vue'
+import { ref, onMounted, onUnmounted, inject } from 'vue'
 import AppSplitter from './AppSplitter.vue'
 
 const sampleArticles = [
@@ -129,15 +110,43 @@ const sampleArticles = [
 const selectedArticle = ref(sampleArticles[0])
 const showRightOnMobile = ref(false)
 
+// Inject the header control functions
+const headerControls = inject('headerControls', null)
+
 const setSelectedArticle = (article) => {
   selectedArticle.value = article
 }
 
 const setShowRightOnMobile = (value) => {
   showRightOnMobile.value = value
+  // Update header state
+  if (headerControls) {
+    headerControls.setShowingList(!value)
+  }
 }
 
 const toggleMobileView = () => {
   showRightOnMobile.value = !showRightOnMobile.value
+  // Update header state
+  if (headerControls) {
+    headerControls.setShowingList(!showRightOnMobile.value)
+  }
 }
+
+onMounted(() => {
+  // Enable mobile toggle in header when this component is mounted
+  if (headerControls) {
+    headerControls.setShowMobileToggle(true)
+    headerControls.setShowingList(true)
+    headerControls.onToggleMobileView = toggleMobileView
+  }
+})
+
+onUnmounted(() => {
+  // Disable mobile toggle in header when this component is unmounted
+  if (headerControls) {
+    headerControls.setShowMobileToggle(false)
+    headerControls.onToggleMobileView = null
+  }
+})
 </script>

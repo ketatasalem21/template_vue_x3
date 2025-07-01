@@ -2,8 +2,11 @@
   <div :class="`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`">
     <AppHeader
       :dark-mode="darkMode"
+      :show-mobile-toggle="showMobileToggle"
+      :showing-list="showingList"
       @toggle-dark-mode="toggleDarkMode"
       @open-navigation="showNavigationModal = true"
+      @toggle-mobile-view="handleMobileToggle"
     />
     
     <main class="pt-16">
@@ -20,7 +23,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, provide } from 'vue'
 import AppHeader from './components/AppHeader.vue'
 import Dashboard from './components/Dashboard.vue'
 import ArticleManagement from './components/ArticleManagement.vue'
@@ -31,6 +34,11 @@ import NavigationModal from './components/NavigationModal.vue'
 const darkMode = ref(false)
 const showNavigationModal = ref(false)
 const currentView = ref('dashboard')
+
+// Header mobile toggle state
+const showMobileToggle = ref(false)
+const showingList = ref(true)
+const onToggleMobileView = ref(null)
 
 const components = {
   dashboard: Dashboard,
@@ -50,6 +58,23 @@ const handleNavigation = (view) => {
   currentComponent.value = components[view] || Dashboard
   showNavigationModal.value = false
 }
+
+const handleMobileToggle = () => {
+  if (onToggleMobileView.value) {
+    onToggleMobileView.value()
+  }
+}
+
+// Provide header controls to child components
+provide('headerControls', {
+  setShowMobileToggle: (value) => {
+    showMobileToggle.value = value
+  },
+  setShowingList: (value) => {
+    showingList.value = value
+  },
+  onToggleMobileView: onToggleMobileView
+})
 
 // Gestion du mode sombre
 watch(darkMode, (newValue) => {

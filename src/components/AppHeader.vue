@@ -23,6 +23,16 @@
         <span class="text-sm text-gray-500 dark:text-gray-400 hidden md:inline">Super administrateur</span>
         <span class="text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded hidden lg:inline">X3V12/X3</span>
 
+        <!-- Mobile Toggle Button for Article Management -->
+        <button
+          v-if="showMobileToggle"
+          @click="$emit('toggleMobileView')"
+          class="lg:hidden p-2 text-gray-500 dark:text-gray-400 hover:text-sage-blue-700 dark:hover:text-sage-blue-400 transition-colors"
+          :title="mobileToggleTitle"
+        >
+          <component :is="mobileToggleIcon" class="w-5 h-5" />
+        </button>
+
         <!-- Navigation Compass Button -->
         <button
           @click="$emit('openNavigation')"
@@ -68,15 +78,33 @@ import {
   Sun,
   Moon,
   Compass,
-  X
+  X,
+  List,
+  FileText
 } from 'lucide-vue-next'
 import CalendarModal from './CalendarModal.vue'
 
-defineProps({
-  darkMode: Boolean
+const props = defineProps({
+  darkMode: Boolean,
+  showMobileToggle: {
+    type: Boolean,
+    default: false
+  },
+  showingList: {
+    type: Boolean,
+    default: true
+  }
 })
 
-defineEmits(['toggleDarkMode', 'openNavigation'])
+defineEmits(['toggleDarkMode', 'openNavigation', 'toggleMobileView'])
 
 const showCalendar = ref(false)
+
+const mobileToggleIcon = computed(() => {
+  return props.showingList ? FileText : List
+})
+
+const mobileToggleTitle = computed(() => {
+  return props.showingList ? 'Voir le formulaire' : 'Voir la liste'
+})
 </script>
