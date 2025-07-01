@@ -1,7 +1,17 @@
 <template>
   <div class="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 h-full flex flex-col min-w-0">
     <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
-      <h2 class="text-gray-900 dark:text-white font-semibold mb-3">Articles</h2>
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-gray-900 dark:text-white font-semibold">Articles</h2>
+        <!-- Bouton pour basculer vers le formulaire en mobile -->
+        <button
+          @click="$emit('toggleMobileView')"
+          class="lg:hidden p-2 text-gray-500 dark:text-gray-400 hover:text-sage-blue-700 dark:hover:text-sage-blue-400 transition-colors"
+          title="Voir le formulaire"
+        >
+          <ChevronRight class="w-5 h-5" />
+        </button>
+      </div>
       <div class="relative">
         <Search class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
         <input
@@ -57,7 +67,7 @@
             <div
               v-for="article in paginatedArticles"
               :key="article.id"
-              @click="$emit('selectArticle', article)"
+              @click="handleArticleClick(article)"
               :class="`grid grid-cols-2 gap-2 p-2 rounded cursor-pointer text-xs hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
                 selectedArticle.id === article.id ? 'bg-blue-100 dark:bg-blue-900' : ''
               }`"
@@ -148,7 +158,7 @@ const props = defineProps({
   selectedArticle: Object
 })
 
-defineEmits(['selectArticle'])
+const emit = defineEmits(['selectArticle', 'toggleMobileView'])
 
 const searchTerm = ref('')
 const designationSearch = ref('')
@@ -172,6 +182,14 @@ const paginatedArticles = computed(() => {
   const startIndex = (currentPage.value - 1) * itemsPerPage
   return filteredArticles.value.slice(startIndex, startIndex + itemsPerPage)
 })
+
+const handleArticleClick = (article) => {
+  emit('selectArticle', article)
+  // En mode mobile, basculer automatiquement vers le formulaire après sélection
+  if (window.innerWidth < 1024) {
+    emit('toggleMobileView')
+  }
+}
 
 const goToFirstPage = () => { currentPage.value = 1 }
 const goToPreviousPage = () => { currentPage.value = Math.max(1, currentPage.value - 1) }

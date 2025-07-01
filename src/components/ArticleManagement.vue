@@ -12,6 +12,7 @@
           :articles="sampleArticles"
           :selected-article="selectedArticle"
           @select-article="setSelectedArticle"
+          @toggle-mobile-view="toggleMobileView"
         />
       </template>
       <template #right>
@@ -19,6 +20,7 @@
           :article="selectedArticle"
           :articles="sampleArticles"
           @select-article="setSelectedArticle"
+          @toggle-mobile-view="toggleMobileView"
         />
       </template>
     </AppSplitter>
@@ -133,5 +135,9 @@ const setSelectedArticle = (article) => {
 
 const setShowRightOnMobile = (value) => {
   showRightOnMobile.value = value
+}
+
+const toggleMobileView = () => {
+  showRightOnMobile.value = !showRightOnMobile.value
 }
 </script>
