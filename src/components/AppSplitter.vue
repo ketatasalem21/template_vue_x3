@@ -5,13 +5,12 @@
       :class="[
         'transition-all duration-300 ease-in-out bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700',
         // Desktop: always show with specified width
-        'hidden lg:block lg:w-80',
-        // Mobile: show full width when showRightOnMobile is false
-        showRightOnMobile ? 'lg:w-80' : 'block w-full lg:w-80'
+        'lg:block lg:w-80',
+        // Mobile: show when NOT showRightOnMobile
+        showRightOnMobile ? 'hidden' : 'block w-full'
       ]"
       :style="{ 
-        minWidth: minLeftWidth + 'px',
-        width: showRightOnMobile ? '' : '100%'
+        minWidth: minLeftWidth + 'px'
       }"
     >
       <slot name="left"></slot>
@@ -22,13 +21,12 @@
       :class="[
         'flex-1 transition-all duration-300 ease-in-out bg-white dark:bg-gray-800',
         // Desktop: always show
-        'hidden lg:block',
+        'lg:block lg:flex-1',
         // Mobile: show when showRightOnMobile is true
-        showRightOnMobile ? 'block w-full lg:flex-1' : 'lg:block lg:flex-1'
+        showRightOnMobile ? 'block w-full' : 'hidden'
       ]"
       :style="{ 
-        minWidth: minRightWidth + 'px',
-        width: showRightOnMobile ? '100%' : ''
+        minWidth: minRightWidth + 'px'
       }"
     >
       <slot name="right"></slot>

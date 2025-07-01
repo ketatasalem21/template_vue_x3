@@ -127,13 +127,20 @@ const sampleArticles = [
 ]
 
 const selectedArticle = ref(sampleArticles[0])
-const showRightOnMobile = ref(false)
+const showRightOnMobile = ref(false) // Par défaut, on montre la liste sur mobile
 
 // Inject the header control functions
 const headerControls = inject('headerControls', null)
 
 const setSelectedArticle = (article) => {
   selectedArticle.value = article
+  // Sur mobile, basculer vers le formulaire quand on sélectionne un article
+  if (window.innerWidth < 1024) {
+    showRightOnMobile.value = true
+    if (headerControls) {
+      headerControls.setShowingList(false)
+    }
+  }
 }
 
 const setShowRightOnMobile = (value) => {
@@ -156,7 +163,7 @@ onMounted(() => {
   // Enable mobile toggle in header when this component is mounted
   if (headerControls) {
     headerControls.setShowMobileToggle(true)
-    headerControls.setShowingList(true)
+    headerControls.setShowingList(!showRightOnMobile.value)
     headerControls.onToggleMobileView.value = toggleMobileView
   }
 })
