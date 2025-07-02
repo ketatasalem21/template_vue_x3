@@ -1,36 +1,57 @@
 <template>
   <div class="h-[calc(100vh-64px)]">
-    <AppSplitter 
-      :initial-split-percentage="25" 
-      :min-left-width="250" 
-      :min-right-width="500"
-      :show-right-on-mobile="showRightOnMobile"
-      @mobile-toggle="setShowRightOnMobile"
-    >
-      <template #left>
-        <AppSidebar 
+    <!-- Mode Desktop: Splitter avec DataTable à gauche et Form à droite -->
+    <div class="hidden lg:block h-full">
+      <AppSplitter 
+        :initial-split-percentage="60" 
+        :min-left-width="400" 
+        :min-right-width="300"
+      >
+        <template #left>
+          <ArticleDataTable 
+            :articles="sampleArticles"
+            :selected-article="selectedArticle"
+            @select-article="setSelectedArticle"
+          />
+        </template>
+        <template #right>
+          <MainContent 
+            :article="selectedArticle"
+            :articles="sampleArticles"
+            @select-article="setSelectedArticle"
+          />
+        </template>
+      </AppSplitter>
+    </div>
+
+    <!-- Mode Mobile: DataTable OU Form selon showRightOnMobile -->
+    <div class="lg:hidden h-full">
+      <!-- DataTable en mode mobile -->
+      <div v-if="!showRightOnMobile" class="h-full">
+        <ArticleDataTable 
           :articles="sampleArticles"
           :selected-article="selectedArticle"
           @select-article="setSelectedArticle"
-          @toggle-mobile-view="toggleMobileView"
         />
-      </template>
-      <template #right>
+      </div>
+
+      <!-- Form en mode mobile -->
+      <div v-else class="h-full">
         <MainContent 
           :article="selectedArticle"
           :articles="sampleArticles"
           @select-article="setSelectedArticle"
           @toggle-mobile-view="toggleMobileView"
         />
-      </template>
-    </AppSplitter>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted, inject } from 'vue'
 import AppSplitter from './AppSplitter.vue'
-import AppSidebar from './AppSidebar.vue'
+import ArticleDataTable from './ArticleDataTable.vue'
 import MainContent from './MainContent.vue'
 
 const sampleArticles = [
@@ -127,7 +148,7 @@ const sampleArticles = [
 ]
 
 const selectedArticle = ref(sampleArticles[0])
-const showRightOnMobile = ref(false) // Par défaut, on montre la liste sur mobile
+const showRightOnMobile = ref(false) // Par défaut, on montre le DataTable sur mobile
 
 // Inject the header control functions
 const headerControls = inject('headerControls', null)
@@ -140,14 +161,6 @@ const setSelectedArticle = (article) => {
     if (headerControls) {
       headerControls.setShowingList(false)
     }
-  }
-}
-
-const setShowRightOnMobile = (value) => {
-  showRightOnMobile.value = value
-  // Update header state
-  if (headerControls) {
-    headerControls.setShowingList(!value)
   }
 }
 
@@ -176,3 +189,4 @@ onUnmounted(() => {
   }
 })
 </script>
+</template>
