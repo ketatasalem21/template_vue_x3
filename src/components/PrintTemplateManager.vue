@@ -1,5 +1,3 @@
-Here's the fixed template with all missing closing brackets added:
-
 <template>
   <div v-if="isOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
     <div class="bg-white dark:bg-gray-800 rounded-none sm:rounded-lg shadow-xl w-full h-full sm:max-w-7xl sm:max-h-[95vh] sm:w-auto sm:h-auto overflow-hidden">
@@ -58,7 +56,11 @@ import TemplateSection from './TemplateSection.vue'
 import GenericDocumentPreview from './GenericDocumentPreview.vue'
 
 const props = defineProps({
-  isOpen: Boolean
+  isOpen: Boolean,
+  templates: {
+    type: Array,
+    default: () => []
+  }
 })
 
 const emit = defineEmits(['close', 'save', 'delete'])
