@@ -1,39 +1,39 @@
 <template>
-  <div v-if="isOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div v-if="isOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
     <div
       class="bg-white dark:bg-gray-800 shadow-xl overflow-hidden
-        w-full h-full m-0 rounded-none
-        sm:rounded-lg sm:max-w-4xl sm:max-h-[80vh] sm:m-4"
+        w-full h-full max-h-screen rounded-none
+        sm:rounded-lg sm:max-w-4xl sm:max-h-[90vh] sm:w-auto sm:h-auto"
     >
       <div class="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Configuration de l'export</h2>
+        <h2 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Configuration de l'export</h2>
         <button
           @click="$emit('close')"
-          class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors"
+          class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors p-1"
         >
           <X class="w-5 h-5" />
         </button>
       </div>
       
-      <div class="p-3 sm:p-6 space-y-6">
+      <div class="p-3 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto h-[calc(100vh-120px)] sm:h-auto">
         <!-- Format d'export -->
         <div>
-          <h3 class="text-md font-medium text-gray-900 dark:text-white mb-3">Format d'export</h3>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <h3 class="text-sm sm:text-md font-medium text-gray-900 dark:text-white mb-3">Format d'export</h3>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
             <button
               v-for="format in exportFormats"
               :key="format.id"
               @click="selectedFormat = format.id"
-              :class="`p-3 border-2 rounded-lg transition-colors ${
+              :class="`p-2 sm:p-3 border-2 rounded-lg transition-colors ${
                 selectedFormat === format.id
                   ? 'border-sage-blue-500 bg-sage-blue-50 dark:bg-sage-blue-900/20'
                   : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
               }`"
             >
-              <div class="flex flex-col items-center space-y-2">
-                <component :is="format.icon" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
-                <span class="text-sm font-medium text-gray-900 dark:text-white">{{ format.label }}</span>
-                <span class="text-xs text-gray-500 dark:text-gray-400">{{ format.description }}</span>
+              <div class="flex flex-col items-center space-y-1 sm:space-y-2">
+                <component :is="format.icon" class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 dark:text-gray-400" />
+                <span class="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">{{ format.label }}</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">{{ format.description }}</span>
               </div>
             </button>
           </div>
@@ -41,30 +41,30 @@
 
         <!-- Sélection des colonnes -->
         <div>
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3">
-            <h3 class="text-md font-medium text-gray-900 dark:text-white">Colonnes à exporter</h3>
-            <div class="flex items-center space-x-2 mt-2 sm:mt-0">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 gap-2">
+            <h3 class="text-sm sm:text-md font-medium text-gray-900 dark:text-white">Colonnes à exporter</h3>
+            <div class="flex items-center space-x-2 text-xs sm:text-sm">
               <button
                 @click="selectAllColumns"
-                class="text-sm text-sage-blue-600 dark:text-sage-blue-400 hover:text-sage-blue-800 dark:hover:text-sage-blue-300"
+                class="text-sage-blue-600 dark:text-sage-blue-400 hover:text-sage-blue-800 dark:hover:text-sage-blue-300"
               >
                 Tout sélectionner
               </button>
               <span class="text-gray-300 dark:text-gray-600">|</span>
               <button
                 @click="deselectAllColumns"
-                class="text-sm text-sage-blue-600 dark:text-sage-blue-400 hover:text-sage-blue-800 dark:hover:text-sage-blue-300"
+                class="text-sage-blue-600 dark:text-sage-blue-400 hover:text-sage-blue-800 dark:hover:text-sage-blue-300"
               >
                 Tout désélectionner
               </button>
             </div>
           </div>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-64 overflow-y-auto border border-gray-200 dark:border-gray-600 rounded-lg p-3 sm:p-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 max-h-48 sm:max-h-64 overflow-y-auto border border-gray-200 dark:border-gray-600 rounded-lg p-2 sm:p-4">
             <label
               v-for="column in columns"
               :key="column.id"
-              class="flex items-center space-x-3 p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded cursor-pointer"
+              class="flex items-center space-x-2 sm:space-x-3 p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded cursor-pointer"
             >
               <input
                 type="checkbox"
@@ -72,8 +72,8 @@
                 @change="toggleColumn(column.id)"
                 class="w-4 h-4 text-sage-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-sage-blue-500"
               />
-              <div class="flex-1">
-                <div class="text-sm font-medium text-gray-900 dark:text-white">{{ column.label }}</div>
+              <div class="flex-1 min-w-0">
+                <div class="text-xs sm:text-sm font-medium text-gray-900 dark:text-white truncate">{{ column.label }}</div>
                 <div class="text-xs text-gray-500 dark:text-gray-400">{{ getTypeLabel(column.type) }}</div>
               </div>
             </label>
@@ -82,27 +82,27 @@
 
         <!-- Options d'export -->
         <div>
-          <h3 class="text-md font-medium text-gray-900 dark:text-white mb-3">Options d'export</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <h3 class="text-sm sm:text-md font-medium text-gray-900 dark:text-white mb-3">Options d'export</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Nom du fichier
               </label>
               <input
                 v-model="fileName"
                 type="text"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sage-blue-500"
+                class="w-full px-2 sm:px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sage-blue-500"
                 placeholder="export_donnees"
               />
             </div>
             
             <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Encodage
               </label>
               <select
                 v-model="encoding"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sage-blue-500"
+                class="w-full px-2 sm:px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sage-blue-500"
               >
                 <option value="utf-8">UTF-8</option>
                 <option value="iso-8859-1">ISO-8859-1</option>
@@ -111,45 +111,45 @@
             </div>
           </div>
           
-          <div class="mt-4 space-y-3">
-            <label class="flex items-center space-x-3">
+          <div class="mt-4 space-y-2 sm:space-y-3">
+            <label class="flex items-center space-x-2 sm:space-x-3">
               <input
                 type="checkbox"
                 v-model="includeHeaders"
                 class="w-4 h-4 text-sage-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-sage-blue-500"
               />
-              <span class="text-sm text-gray-700 dark:text-gray-300">Inclure les en-têtes de colonnes</span>
+              <span class="text-xs sm:text-sm text-gray-700 dark:text-gray-300">Inclure les en-têtes de colonnes</span>
             </label>
             
-            <label class="flex items-center space-x-3">
+            <label class="flex items-center space-x-2 sm:space-x-3">
               <input
                 type="checkbox"
                 v-model="includeFilters"
                 class="w-4 h-4 text-sage-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-sage-blue-500"
               />
-              <span class="text-sm text-gray-700 dark:text-gray-300">Inclure les informations de filtrage</span>
+              <span class="text-xs sm:text-sm text-gray-700 dark:text-gray-300">Inclure les informations de filtrage</span>
             </label>
             
-            <label class="flex items-center space-x-3">
+            <label class="flex items-center space-x-2 sm:space-x-3">
               <input
                 type="checkbox"
                 v-model="formatDates"
                 class="w-4 h-4 text-sage-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-sage-blue-500"
               />
-              <span class="text-sm text-gray-700 dark:text-gray-300">Formater les dates (DD/MM/YYYY)</span>
+              <span class="text-xs sm:text-sm text-gray-700 dark:text-gray-300">Formater les dates (DD/MM/YYYY)</span>
             </label>
           </div>
         </div>
 
         <!-- Aperçu -->
         <div v-if="selectedColumns.length > 0">
-          <h3 class="text-md font-medium text-gray-900 dark:text-white mb-3">Aperçu de l'export</h3>
-          <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 sm:p-4 max-h-32 overflow-auto">
+          <h3 class="text-sm sm:text-md font-medium text-gray-900 dark:text-white mb-3">Aperçu de l'export</h3>
+          <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-2 sm:p-4 max-h-24 sm:max-h-32 overflow-auto">
             <div class="text-xs font-mono text-gray-600 dark:text-gray-300">
-              <div v-if="includeHeaders" class="font-bold border-b border-gray-300 dark:border-gray-600 pb-1 mb-1">
+              <div v-if="includeHeaders" class="font-bold border-b border-gray-300 dark:border-gray-600 pb-1 mb-1 truncate">
                 {{ previewHeaders }}
               </div>
-              <div v-for="(row, index) in previewData" :key="index" class="py-0.5">
+              <div v-for="(row, index) in previewData" :key="index" class="py-0.5 truncate">
                 {{ row }}
               </div>
             </div>
@@ -160,22 +160,22 @@
         </div>
       </div>
       
-      <div class="flex flex-col sm:flex-row justify-between items-center p-3 sm:p-4 border-t border-gray-200 dark:border-gray-700">
-        <div class="text-sm text-gray-500 dark:text-gray-400 mb-2 sm:mb-0">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 border-t border-gray-200 dark:border-gray-700 gap-3 sm:gap-0">
+        <div class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 order-2 sm:order-1">
           Format: {{ getFormatLabel(selectedFormat) }} • 
           {{ selectedColumns.length }}/{{ columns.length }} colonnes
         </div>
-        <div class="flex space-x-3">
+        <div class="flex space-x-2 sm:space-x-3 w-full sm:w-auto order-1 sm:order-2">
           <button
             @click="$emit('close')"
-            class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+            class="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
           >
             Annuler
           </button>
           <button
             @click="handleExport"
             :disabled="selectedColumns.length === 0"
-            class="px-4 py-2 text-sm text-white bg-sage-blue-700 rounded hover:bg-sage-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            class="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-sm text-white bg-sage-blue-700 rounded hover:bg-sage-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <Download class="w-4 h-4 inline mr-1" />
             Exporter
