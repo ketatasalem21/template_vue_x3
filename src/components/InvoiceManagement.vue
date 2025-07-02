@@ -234,6 +234,7 @@
 
     <PrintTemplateManager
       :is-open="showTemplateManager"
+      :templates="printTemplates"
       @close="showTemplateManager = false"
       @save="handleSaveTemplate"
       @delete="handleDeleteTemplate"
