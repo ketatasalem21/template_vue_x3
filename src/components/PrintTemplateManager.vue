@@ -22,7 +22,7 @@
       <!-- Footer -->
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 gap-3 sm:gap-0">
         <div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 order-2 sm:order-1">
-          {{ allTemplates.length }} modèle(s) configuré(s)
+          {{ templates.length }} modèle(s) configuré(s)
         </div>
         <div class="flex space-x-2 sm:space-x-3 w-full sm:w-auto order-1 sm:order-2">
           <button
