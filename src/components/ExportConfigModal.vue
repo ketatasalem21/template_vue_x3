@@ -5,11 +5,11 @@
         w-full h-full max-h-screen rounded-none
         sm:rounded-lg sm:max-w-4xl sm:max-h-[90vh] sm:w-auto sm:h-auto"
     >
-      <div class="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
-        <h2 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Configuration de l'export</h2>
+      <div class="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700" style="background: linear-gradient(to right, rgb(7, 58, 111), rgb(9, 70, 133));">
+        <h2 class="text-base sm:text-lg font-semibold text-white">Configuration de l'export</h2>
         <button
           @click="$emit('close')"
-          class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors p-1"
+          class="text-white hover:text-gray-200 transition-colors p-1"
         >
           <X class="w-5 h-5" />
         </button>
@@ -175,7 +175,8 @@
           <button
             @click="handleExport"
             :disabled="selectedColumns.length === 0"
-            class="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-sm text-white bg-sage-blue-700 rounded hover:bg-sage-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            class="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-sm text-white rounded hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            style="background-color: rgb(7, 58, 111);"
           >
             <Download class="w-4 h-4 inline mr-1" />
             Exporter
