@@ -1,55 +1,50 @@
 <template>
-  <div v-if="isOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
-    <div
-      class="bg-white dark:bg-gray-800 shadow-xl overflow-hidden
-        w-full h-full max-h-screen rounded-none
-        sm:rounded-lg sm:max-w-6xl sm:max-h-[90vh] sm:w-auto sm:h-auto"
-    >
-      <div class="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700" style="background: linear-gradient(to right, rgb(7, 58, 111), rgb(9, 70, 133));">
-        <h2 class="text-base sm:text-lg font-semibold text-white">
+  <div v-if="isOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-4xl max-h-[80vh] m-4">
+      <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
           Impression {{ documentType?.name }} - {{ documentData?.number || 'N/A' }}
         </h2>
         <button
           @click="$emit('close')"
-          class="text-white hover:text-gray-200 transition-colors p-1"
+          class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors"
         >
           <X class="w-5 h-5" />
         </button>
       </div>
       
-      <div class="p-3 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto h-[calc(100vh-120px)] sm:h-auto">
+      <div class="p-6 space-y-6">
         <!-- Sélection du modèle -->
         <div>
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
-            <h3 class="text-sm sm:text-md font-medium text-gray-900 dark:text-white">Modèle d'impression</h3>
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-md font-medium text-gray-900 dark:text-white">Modèle d'impression</h3>
             <button
               @click="openTemplateManager"
-              class="px-3 py-1 text-sm text-white rounded hover:opacity-80 transition-colors"
-              style="background-color: rgb(7, 58, 111);"
+              class="px-3 py-1 text-sm bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
             >
               <Settings class="w-4 h-4 inline mr-1" />
               Gérer les modèles
             </button>
           </div>
           
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div
               v-for="template in availableTemplates"
               :key="template.id"
               @click="selectedTemplate = template.id"
-              :class="`p-3 sm:p-4 border-2 rounded-lg cursor-pointer transition-colors ${
+              :class="`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
                 selectedTemplate === template.id
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                  ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
                   : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
               }`"
             >
               <div class="flex items-center justify-between mb-2">
-                <h4 class="font-medium text-gray-900 dark:text-white text-sm">{{ template.name }}</h4>
+                <h4 class="font-medium text-gray-900 dark:text-white">{{ template.name }}</h4>
                 <div v-if="template.isDefault" class="flex items-center">
                   <Star class="w-4 h-4 text-yellow-500" />
                 </div>
               </div>
-              <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{{ template.description }}</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">{{ template.description }}</p>
               <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
                 Format: {{ template.format }}
               </div>
@@ -59,8 +54,8 @@
 
         <!-- Options d'impression -->
         <div>
-          <h3 class="text-sm sm:text-md font-medium text-gray-900 dark:text-white mb-4">Options d'impression</h3>
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+          <h3 class="text-md font-medium text-gray-900 dark:text-white mb-4">Options d'impression</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="space-y-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -71,7 +66,7 @@
                   type="number"
                   min="1"
                   max="10"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
               
@@ -81,7 +76,7 @@
                 </label>
                 <select
                   v-model="printOptions.paperSize"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                   <option value="A4">A4 (210 x 297 mm)</option>
                   <option value="A3">A3 (297 x 420 mm)</option>
@@ -102,7 +97,7 @@
                       v-model="printOptions.orientation"
                       type="radio"
                       value="portrait"
-                      class="w-4 h-4 text-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                      class="w-4 h-4 text-purple-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-purple-500"
                     />
                     <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Portrait</span>
                   </label>
@@ -111,7 +106,7 @@
                       v-model="printOptions.orientation"
                       type="radio"
                       value="landscape"
-                      class="w-4 h-4 text-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+                      class="w-4 h-4 text-purple-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-purple-500"
                     />
                     <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Paysage</span>
                   </label>
@@ -123,7 +118,7 @@
                   <input
                     v-model="printOptions.includeBackground"
                     type="checkbox"
-                    class="w-4 h-4 text-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
+                    class="w-4 h-4 text-purple-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-purple-500"
                   />
                   <span class="text-sm text-gray-700 dark:text-gray-300">Inclure les couleurs de fond</span>
                 </label>
@@ -132,7 +127,7 @@
                   <input
                     v-model="printOptions.showHeaders"
                     type="checkbox"
-                    class="w-4 h-4 text-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
+                    class="w-4 h-4 text-purple-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-purple-500"
                   />
                   <span class="text-sm text-gray-700 dark:text-gray-300">Afficher en-têtes et pieds de page</span>
                 </label>
@@ -143,9 +138,9 @@
 
         <!-- Aperçu -->
         <div v-if="selectedTemplateData">
-          <h3 class="text-sm sm:text-md font-medium text-gray-900 dark:text-white mb-4">Aperçu</h3>
-          <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-2 sm:p-4 max-h-64 sm:max-h-96 overflow-y-auto">
-            <div class="bg-white rounded shadow-lg p-3 sm:p-6 max-w-full sm:max-w-2xl mx-auto transform scale-50 sm:scale-75 origin-top">
+          <h3 class="text-md font-medium text-gray-900 dark:text-white mb-4">Aperçu</h3>
+          <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 max-h-96 overflow-y-auto">
+            <div class="bg-white rounded shadow-lg p-6 max-w-2xl mx-auto transform scale-75 origin-top">
               <GenericDocumentPreview
                 :template="selectedTemplateData"
                 :document-type="documentType"
@@ -157,30 +152,29 @@
         </div>
       </div>
       
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 border-t border-gray-200 dark:border-gray-700 gap-3 sm:gap-0">
-        <div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 order-2 sm:order-1">
+      <div class="flex justify-between items-center p-4 border-t border-gray-200 dark:border-gray-700">
+        <div class="text-sm text-gray-600 dark:text-gray-400">
           Modèle: {{ selectedTemplateData?.name }} • 
           {{ printOptions.copies }} copie(s) • 
           {{ printOptions.paperSize }} {{ printOptions.orientation }}
         </div>
-        <div class="flex space-x-2 sm:space-x-3 w-full sm:w-auto order-1 sm:order-2">
+        <div class="flex space-x-3">
           <button
             @click="$emit('close')"
-            class="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+            class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
           >
             Annuler
           </button>
           <button
             @click="previewPrint"
-            class="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+            class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
           >
             <Eye class="w-4 h-4 inline mr-1" />
             Aperçu
           </button>
           <button
             @click="handlePrint"
-            class="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-sm text-white rounded hover:opacity-80 transition-colors"
-            style="background-color: rgb(7, 58, 111);"
+            class="px-4 py-2 text-sm text-white bg-purple-600 rounded hover:bg-purple-700 transition-colors"
           >
             <Printer class="w-4 h-4 inline mr-1" />
             Imprimer
