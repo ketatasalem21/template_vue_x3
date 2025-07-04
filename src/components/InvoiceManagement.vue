@@ -12,7 +12,8 @@
         <div class="flex items-center space-x-2">
           <button
             @click="showTemplateManager = true"
-            class="px-3 py-2 text-sm bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+            class="px-3 py-2 text-sm text-white rounded hover:opacity-80 transition-colors"
+            style="background-color: rgb(7, 58, 111);"
           >
             <Settings class="w-4 h-4 inline mr-1" />
             Modèles d'impression
@@ -496,6 +497,7 @@ const editInvoice = (invoice) => {
 }
 
 const showPrintOptions = (invoice) => {
+  console.log('Opening print modal for invoice:', invoice)
   selectedInvoice.value = invoice
   showPrintModal.value = true
 }
