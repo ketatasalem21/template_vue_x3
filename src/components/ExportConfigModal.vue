@@ -15,7 +15,7 @@
         </button>
       </div>
       
-      <div class="p-3 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto h-[calc(100vh-120px)] sm:h-auto">
+      <div class="p-3 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto h-[calc(100vh-160px)] sm:h-auto">
         <!-- Format d'export -->
         <div>
           <h3 class="text-sm sm:text-md font-medium text-gray-900 dark:text-white mb-3">Format d'export</h3>
@@ -160,7 +160,7 @@
         </div>
       </div>
       
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 border-t border-gray-200 dark:border-gray-700 gap-3 sm:gap-0">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 border-t border-gray-200 dark:border-gray-700 gap-3 sm:gap-0 bg-gray-50 dark:bg-gray-700">
         <div class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 order-2 sm:order-1">
           Format: {{ getFormatLabel(selectedFormat) }} • 
           {{ selectedColumns.length }}/{{ columns.length }} colonnes
