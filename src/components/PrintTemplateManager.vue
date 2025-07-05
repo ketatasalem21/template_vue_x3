@@ -379,6 +379,14 @@
             <Save class="w-4 h-4 inline mr-1" />
             Enregistrer
           </button>
+          <button
+            v-if="selectedTemplate && selectedDocumentType"
+            @click="printTemplate"
+            class="flex-1 sm:flex-none px-4 py-2 text-sm text-white bg-green-600 rounded hover:bg-green-700 transition-colors"
+          >
+            <Printer class="w-4 h-4 inline mr-1" />
+            Imprimer
+          </button>
         </div>
       </div>
     </div>
@@ -399,7 +407,7 @@ const props = defineProps({
   isOpen: Boolean
 })
 
-const emit = defineEmits(['close', 'save', 'delete'])
+const emit = defineEmits(['close', 'save', 'delete', 'print'])
 
 const selectedDocumentType = ref(null)
 const selectedTemplate = ref(null)
@@ -710,5 +718,190 @@ const saveTemplate = () => {
     }
     emit('save', selectedTemplate.value)
   }
+}
+
+const printTemplate = () => {
+  if (selectedTemplate.value && selectedDocumentType.value) {
+    const printConfig = {
+      template: selectedTemplate.value,
+      documentType: selectedDocumentType.value,
+      sampleData: getSampleDataForType(selectedDocumentType.value.id),
+      mode: previewMode.value
+    }
+    
+    // Émettre l'événement d'impression
+    emit('print', printConfig)
+    
+    // Ouvrir la fenêtre d'impression
+    const printWindow = window.open('', '_blank')
+    if (printWindow) {
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Impression - ${selectedTemplate.value.name}</title>
+            <style>
+              body { 
+                font-family: ${selectedTemplate.value.styling.fontFamily}, sans-serif; 
+                font-size: ${selectedTemplate.value.styling.fontSize};
+                margin: 20px; 
+                color: #374151;
+              }
+              .document-preview { max-width: 800px; margin: 0 auto; }
+              table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+              th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+              th { background-color: ${selectedTemplate.value.styling.secondaryColor}; font-weight: bold; }
+              .header { margin-bottom: 30px; }
+              .company-info h1 { color: ${selectedTemplate.value.styling.primaryColor}; margin: 0; }
+              .totals { margin-top: 20px; }
+              .total-line { display: flex; justify-content: space-between; margin: 5px 0; }
+              .total-final { font-weight: bold; font-size: 1.2em; color: ${selectedTemplate.value.styling.primaryColor}; }
+              @media print {
+                body { margin: 0; }
+                .no-print { display: none; }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="no-print" style="text-align: center; margin-bottom: 20px;">
+              <button onclick="window.print()">Imprimer</button>
+              <button onclick="window.close()">Fermer</button>
+            </div>
+            <div class="document-preview">
+              ${generatePrintContent()}
+            </div>
+          </body>
+        </html>
+      `)
+      printWindow.document.close()
+    }
+  }
+}
+
+const generatePrintContent = () => {
+  if (!selectedTemplate.value || !selectedDocumentType.value) return ''
+  
+  const sampleData = getSampleDataForType(selectedDocumentType.value.id)
+  let content = ''
+  
+  // En-tête
+  if (selectedTemplate.value.sections.header.showCompanyInfo || selectedTemplate.value.sections.header.showTitle) {
+    content += '<div class="header">'
+    if (selectedTemplate.value.sections.header.showCompanyInfo) {
+      content += `
+        <div class="company-info">
+          <h1>Sage X3 Galvanoplastie</h1>
+          <div style="font-size: 0.9em; color: #6b7280; margin-top: 10px;">
+            <p>123 Rue de l'Industrie</p>
+            <p>69000 Lyon, France</p>
+            <p>Tél: +33 4 72 00 00 00</p>
+          </div>
+        </div>
+      `
+    }
+    if (selectedTemplate.value.sections.header.showTitle) {
+      content += `<h2 style="color: ${selectedTemplate.value.styling.primaryColor}; text-align: center; margin: 20px 0;">${selectedDocumentType.value.name.toUpperCase()}</h2>`
+    }
+    content += '</div>'
+  }
+  
+  // Informations principales
+  if (selectedTemplate.value.sections.main.showNumber || selectedTemplate.value.sections.main.showDate) {
+    content += '<div style="margin-bottom: 30px;">'
+    content += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">'
+    
+    // Informations client/fournisseur
+    if (sampleData.client || sampleData.supplier) {
+      content += '<div>'
+      content += `<h3 style="color: ${selectedTemplate.value.styling.primaryColor}; margin-bottom: 10px;">${sampleData.client ? 'Client' : 'Fournisseur'}:</h3>`
+      content += `<p style="font-weight: bold;">${sampleData.client || sampleData.supplier}</p>`
+      if (sampleData.clientAddress || sampleData.supplierAddress) {
+        content += `<div style="white-space: pre-line; color: #6b7280;">${sampleData.clientAddress || sampleData.supplierAddress}</div>`
+      }
+      content += '</div>'
+    }
+    
+    // Informations document
+    content += '<div>'
+    if (selectedTemplate.value.sections.main.showNumber && sampleData.number) {
+      content += `<div class="total-line"><span>Numéro:</span><span>${sampleData.number}</span></div>`
+    }
+    if (selectedTemplate.value.sections.main.showDate && sampleData.date) {
+      content += `<div class="total-line"><span>Date:</span><span>${new Date(sampleData.date).toLocaleDateString('fr-FR')}</span></div>`
+    }
+    if (selectedTemplate.value.sections.main.showDueDate && sampleData.dueDate) {
+      content += `<div class="total-line"><span>Échéance:</span><span>${new Date(sampleData.dueDate).toLocaleDateString('fr-FR')}</span></div>`
+    }
+    content += '</div>'
+    
+    content += '</div></div>'
+  }
+  
+  // Tableau des articles
+  if (selectedTemplate.value.sections.table.showDescription && sampleData.items) {
+    content += '<table>'
+    content += '<thead><tr>'
+    if (selectedTemplate.value.sections.table.showDescription) content += '<th>Description</th>'
+    if (selectedTemplate.value.sections.table.showQuantity) content += '<th style="text-align: center;">Qté</th>'
+    if (selectedTemplate.value.sections.table.showUnitPrice) content += '<th style="text-align: right;">Prix unit.</th>'
+    if (selectedTemplate.value.sections.table.showTotal) content += '<th style="text-align: right;">Total</th>'
+    content += '</tr></thead>'
+    content += '<tbody>'
+    
+    sampleData.items.forEach(item => {
+      content += '<tr>'
+      if (selectedTemplate.value.sections.table.showDescription) content += `<td>${item.description}</td>`
+      if (selectedTemplate.value.sections.table.showQuantity) content += `<td style="text-align: center;">${item.quantity}</td>`
+      if (selectedTemplate.value.sections.table.showUnitPrice) content += `<td style="text-align: right;">${new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(item.unitPrice)}</td>`
+      if (selectedTemplate.value.sections.table.showTotal) content += `<td style="text-align: right; font-weight: bold;">${new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(item.total)}</td>`
+      content += '</tr>'
+    })
+    
+    content += '</tbody></table>'
+  }
+  
+  // Totaux
+  if (selectedTemplate.value.sections.totals.showSubtotal && sampleData.subtotal) {
+    content += '<div class="totals" style="text-align: right;">'
+    content += '<div style="width: 300px; margin-left: auto;">'
+    if (selectedTemplate.value.sections.totals.showSubtotal) {
+      content += `<div class="total-line"><span>Sous-total:</span><span>${new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(sampleData.subtotal)}</span></div>`
+    }
+    if (selectedTemplate.value.sections.totals.showTax && sampleData.tax) {
+      content += `<div class="total-line"><span>TVA:</span><span>${new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(sampleData.tax)}</span></div>`
+    }
+    if (selectedTemplate.value.sections.totals.showTotal && sampleData.total) {
+      content += `<div class="total-line total-final" style="border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px;"><span>Total:</span><span>${new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(sampleData.total)}</span></div>`
+    }
+    content += '</div></div>'
+  }
+  
+  // Pied de page
+  if (selectedTemplate.value.sections.footer.showPaymentInfo || selectedTemplate.value.sections.footer.showLegalMentions) {
+    content += '<div style="margin-top: 40px;">'
+    if (selectedTemplate.value.sections.footer.showPaymentInfo) {
+      content += `
+        <div style="margin-bottom: 20px;">
+          <h4 style="color: ${selectedTemplate.value.styling.primaryColor};">Informations de paiement</h4>
+          <div style="font-size: 0.9em; color: #6b7280;">
+            <p>Banque: Crédit Lyonnais</p>
+            <p>IBAN: FR76 3000 3000 1100 0000 1234 567</p>
+            <p>BIC: CCFRFRPP</p>
+          </div>
+        </div>
+      `
+    }
+    if (selectedTemplate.value.sections.footer.showLegalMentions) {
+      content += `
+        <div style="border-top: 1px solid #ddd; padding-top: 20px; margin-top: 20px;">
+          <p style="font-size: 0.8em; color: #6b7280; text-align: center;">
+            Sage X3 Galvanoplastie - SAS au capital de 100 000€ - SIRET: 123 456 789 00012 - TVA: FR12345678901
+          </p>
+        </div>
+      `
+    }
+    content += '</div>'
+  }
+  
+  return content
 }
 </script>
