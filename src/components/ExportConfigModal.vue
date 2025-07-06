@@ -15,7 +15,7 @@
         </button>
       </div>
       
-      <div class="p-3 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto h-[calc(100vh-160px)] sm:h-auto">
+      <div class="p-3 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto h-[calc(100vh-160px)] sm:h-[calc(90vh-160px)]">
         <!-- Format d'export -->
         <div>
           <h3 class="text-sm sm:text-md font-medium text-gray-900 dark:text-white mb-3">Format d'export</h3>
@@ -165,20 +165,20 @@
           Format: {{ getFormatLabel(selectedFormat) }} • 
           {{ selectedColumns.length }}/{{ columns.length }} colonnes
         </div>
-        <div class="flex space-x-2 sm:space-x-3 w-full sm:w-auto order-1 sm:order-2">
+        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 w-full sm:w-auto order-1 sm:order-2">
           <button
             @click="$emit('close')"
-            class="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+            class="w-full sm:w-auto px-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
           >
             Annuler
           </button>
           <button
             @click="handleExport"
             :disabled="selectedColumns.length === 0"
-            class="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-sm text-white rounded hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            class="w-full sm:w-auto px-6 py-3 text-base font-medium text-white rounded-lg hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg"
             style="background-color: rgb(7, 58, 111);"
           >
-            <Download class="w-4 h-4 inline mr-1" />
+            <Download class="w-4 h-4 inline mr-2" />
             Exporter
           </button>
         </div>

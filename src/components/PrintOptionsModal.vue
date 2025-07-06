@@ -13,7 +13,7 @@
         </button>
       </div>
       
-      <div class="p-6 space-y-6">
+      <div class="p-6 space-y-6 max-h-[calc(80vh-200px)] overflow-y-auto">
         <!-- Sélection du modèle -->
         <div>
           <div class="flex items-center justify-between mb-4">
@@ -213,31 +213,33 @@
         </div>
       </div>
       
-      <div class="flex justify-between items-center p-4 border-t border-gray-200 dark:border-gray-700">
+      <!-- Footer avec boutons plus visibles -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 gap-4 sm:gap-0">
         <div class="text-sm text-gray-600 dark:text-gray-400">
           Modèle: {{ selectedTemplateData?.name }} • 
           {{ printOptions.copies }} copie(s) • 
           {{ printOptions.paperSize }} {{ printOptions.orientation }}
         </div>
-        <div class="flex space-x-3">
+        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
           <button
             @click="$emit('close')"
-            class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+            class="w-full sm:w-auto px-6 py-3 text-sm text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
           >
             Annuler
           </button>
           <button
             @click="previewPrint"
-            class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+            class="w-full sm:w-auto px-6 py-3 text-sm text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
           >
-            <Eye class="w-4 h-4 inline mr-1" />
+            <Eye class="w-4 h-4 inline mr-2" />
             Aperçu
           </button>
           <button
             @click="handlePrint"
-            class="px-4 py-2 text-sm text-white bg-purple-600 rounded hover:bg-purple-700 transition-colors"
+            class="w-full sm:w-auto px-8 py-3 text-base font-medium text-white rounded-lg hover:opacity-90 transition-colors shadow-lg"
+            style="background-color: rgb(7, 58, 111);"
           >
-            <Printer class="w-4 h-4 inline mr-1" />
+            <Printer class="w-5 h-5 inline mr-2" />
             Imprimer
           </button>
         </div>
