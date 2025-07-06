@@ -223,17 +223,18 @@
       @save="handleCreateInvoice"
     />
 
-    <GenericPrintModal
+    <PrintOptionsModal
       :is-open="showPrintModal"
-      :document-type="invoiceDocumentType"
-      :document-data="selectedInvoice"
+      :invoice="selectedInvoice"
       :templates="printTemplates"
       @close="showPrintModal = false"
       @print="handlePrint"
+      @configure-template="showTemplateManager = true"
     />
 
-    <PrintTemplateManager
+    <PrintTemplateConfigModal
       :is-open="showTemplateManager"
+      :templates="printTemplates"
       @close="showTemplateManager = false"
       @save="handleSaveTemplate"
       @delete="handleDeleteTemplate"
@@ -248,8 +249,8 @@ import {
 } from 'lucide-vue-next'
 import InvoiceDetailModal from './InvoiceDetailModal.vue'
 import CreateInvoiceModal from './CreateInvoiceModal.vue'
-import GenericPrintModal from './GenericPrintModal.vue'
-import PrintTemplateManager from './PrintTemplateManager.vue'
+import PrintOptionsModal from './PrintOptionsModal.vue'
+import PrintTemplateConfigModal from './PrintTemplateConfigModal.vue'
 
 // État du composant
 const searchTerm = ref('')
@@ -265,13 +266,6 @@ const showInvoiceDetail = ref(false)
 const showCreateInvoice = ref(false)
 const showPrintModal = ref(false)
 const showTemplateManager = ref(false)
-
-// Type de document pour les factures
-const invoiceDocumentType = ref({
-  id: 'invoice',
-  name: 'Factures',
-  description: 'Factures de vente et d\'achat'
-})
 
 // Données des factures
 const invoices = ref([
@@ -344,49 +338,46 @@ const invoices = ref([
 const printTemplates = ref([
   {
     id: 'invoice-standard',
-    documentType: 'invoice',
     name: 'Facture Standard',
     description: 'Modèle standard pour factures',
     format: 'PDF',
     isDefault: true,
-    sections: {
+    fields: {
       header: {
         showLogo: true,
         showCompanyInfo: true,
-        showTitle: true,
+        showInvoiceTitle: true,
         logoPosition: 'left'
       },
-      main: {
-        showNumber: true,
-        showDate: true,
-        showDueDate: true,
-        showClient: true,
-        showClientAddress: true
+      client: {
+        showClientAddress: true,
+        showClientContact: true,
+        addressPosition: 'right'
       },
-      table: {
+      invoice: {
+        showInvoiceNumber: true,
+        showInvoiceDate: true,
+        showDueDate: true,
+        showPaymentTerms: true
+      },
+      items: {
         showDescription: true,
         showQuantity: true,
         showUnitPrice: true,
-        showTotal: true
-      },
-      totals: {
-        showSubtotal: true,
-        showTax: true,
         showTotal: true,
-        showDiscount: false
+        showTVA: true
       },
       footer: {
         showPaymentInfo: true,
         showLegalMentions: true,
         showSignature: false
+      },
+      styling: {
+        primaryColor: '#073a6f',
+        secondaryColor: '#f3f4f6',
+        fontFamily: 'Arial',
+        fontSize: '12px'
       }
-    },
-    styling: {
-      primaryColor: '#073a6f',
-      secondaryColor: '#f3f4f6',
-      fontFamily: 'Arial',
-      fontSize: '12px',
-      orientation: 'portrait'
     }
   }
 ])
