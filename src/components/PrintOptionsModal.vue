@@ -20,7 +20,7 @@
             <h3 class="text-md font-medium text-gray-900 dark:text-white">Modèle d'impression</h3>
             <button
               @click="$emit('configureTemplate')"
-              class="px-3 py-1 text-sm bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+              class="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
             >
               <Settings class="w-4 h-4 inline mr-1" />
               Configurer
@@ -34,7 +34,7 @@
               @click="selectedTemplate = template.id"
               :class="`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
                 selectedTemplate === template.id
-                  ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
                   : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
               }`"
             >
@@ -50,7 +50,7 @@
               <div class="mt-3 bg-gray-100 dark:bg-gray-700 rounded p-2">
                 <div class="text-xs text-gray-500 dark:text-gray-400">
                   <div class="flex items-center space-x-2 mb-1">
-                    <div v-if="template.fields.header.showLogo" class="w-2 h-2 bg-purple-400 rounded"></div>
+                    <div v-if="template.fields.header.showLogo" class="w-2 h-2 bg-blue-400 rounded"></div>
                     <span v-if="template.fields.header.showCompanyInfo">Entreprise</span>
                   </div>
                   <div class="border-t border-gray-300 dark:border-gray-600 pt-1">
@@ -79,7 +79,7 @@
                   type="number"
                   min="1"
                   max="10"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               
@@ -89,7 +89,7 @@
                 </label>
                 <select
                   v-model="printOptions.paperSize"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="A4">A4 (210 x 297 mm)</option>
                   <option value="A3">A3 (297 x 420 mm)</option>
@@ -108,7 +108,7 @@
                       v-model="printOptions.orientation"
                       type="radio"
                       value="portrait"
-                      class="w-4 h-4 text-purple-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-purple-500"
+                      class="w-4 h-4 text-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-blue-500"
                     />
                     <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Portrait</span>
                   </label>
@@ -117,7 +117,7 @@
                       v-model="printOptions.orientation"
                       type="radio"
                       value="landscape"
-                      class="w-4 h-4 text-purple-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-purple-500"
+                      class="w-4 h-4 text-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-blue-500"
                     />
                     <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Paysage</span>
                   </label>
@@ -132,7 +132,7 @@
                 </label>
                 <select
                   v-model="printOptions.quality"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="draft">Brouillon</option>
                   <option value="normal">Normal</option>
@@ -150,7 +150,7 @@
                       v-model="printOptions.color"
                       type="radio"
                       value="color"
-                      class="w-4 h-4 text-purple-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-purple-500"
+                      class="w-4 h-4 text-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-blue-500"
                     />
                     <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Couleur</span>
                   </label>
@@ -159,7 +159,7 @@
                       v-model="printOptions.color"
                       type="radio"
                       value="grayscale"
-                      class="w-4 h-4 text-purple-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-purple-500"
+                      class="w-4 h-4 text-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-blue-500"
                     />
                     <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Noir et blanc</span>
                   </label>
@@ -171,7 +171,7 @@
                   <input
                     v-model="printOptions.includeBackground"
                     type="checkbox"
-                    class="w-4 h-4 text-purple-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-purple-500"
+                    class="w-4 h-4 text-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
                   />
                   <span class="text-sm text-gray-700 dark:text-gray-300">Inclure les couleurs de fond</span>
                 </label>
@@ -180,7 +180,7 @@
                   <input
                     v-model="printOptions.fitToPage"
                     type="checkbox"
-                    class="w-4 h-4 text-purple-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-purple-500"
+                    class="w-4 h-4 text-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
                   />
                   <span class="text-sm text-gray-700 dark:text-gray-300">Ajuster à la page</span>
                 </label>
@@ -189,7 +189,7 @@
                   <input
                     v-model="printOptions.showHeaders"
                     type="checkbox"
-                    class="w-4 h-4 text-purple-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-purple-500"
+                    class="w-4 h-4 text-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
                   />
                   <span class="text-sm text-gray-700 dark:text-gray-300">Afficher en-têtes et pieds de page</span>
                 </label>
@@ -213,34 +213,34 @@
         </div>
       </div>
       
-      <!-- Footer avec boutons plus visibles -->
+      <!-- Footer avec bouton d'impression plus visible -->
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 gap-4 sm:gap-0">
         <div class="text-sm text-gray-600 dark:text-gray-400">
           Modèle: {{ selectedTemplateData?.name }} • 
           {{ printOptions.copies }} copie(s) • 
           {{ printOptions.paperSize }} {{ printOptions.orientation }}
         </div>
-        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
+        <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
           <button
             @click="$emit('close')"
-            class="w-full sm:w-auto px-6 py-3 text-sm text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+            class="w-full sm:w-auto px-6 py-2 text-sm text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
           >
             Annuler
           </button>
           <button
             @click="previewPrint"
-            class="w-full sm:w-auto px-6 py-3 text-sm text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+            class="w-full sm:w-auto px-6 py-2 text-sm text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
           >
             <Eye class="w-4 h-4 inline mr-2" />
             Aperçu
           </button>
+          <!-- Bouton d'impression plus visible avec couleur bleue -->
           <button
             @click="handlePrint"
-            class="w-full sm:w-auto px-8 py-3 text-base font-medium text-white rounded-lg hover:opacity-90 transition-colors shadow-lg"
-            style="background-color: rgb(7, 58, 111);"
+            class="w-full sm:w-auto px-8 py-4 text-lg font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-lg border-2 border-blue-700 hover:border-blue-800"
           >
-            <Printer class="w-5 h-5 inline mr-2" />
-            Imprimer
+            <Printer class="w-6 h-6 inline mr-3" />
+            IMPRIMER
           </button>
         </div>
       </div>
