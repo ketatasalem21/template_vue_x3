@@ -301,4 +301,3 @@ const saveConfiguration = () => {
   opacity: 0;
 }
 </style>
-</template>
